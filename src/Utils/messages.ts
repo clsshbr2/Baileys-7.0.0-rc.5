@@ -74,6 +74,8 @@ const MessageTypeProto = {
 	document: WAProto.Message.DocumentMessage
 } as const
 
+const ButtonType = WAProto.Message.ButtonsMessage.HeaderType;
+
 /**
  * Uses a regex to test whether the string contains a URL, and returns the URL if it does.
  * @param text eg. hello https://google.com
@@ -576,6 +578,9 @@ export const generateWAMessageContent = async (
 				initiatedByMe: true
 			}
 		}
+	}else if ('listMessage' in message && !!message.listMessage) {
+		m = { listMessage: WAProto.Message.ListMessage.create(message.listMessage) };
+
 	} else {
 		m = await prepareWAMessageMedia(message, options)
 	}
